@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/UCB-stat-159-f25/hw-2-carly-tran"
+Homepage = "https://github.com/UCB-stat-159-f25/hw-3-carly-tran"
 
 [tool.setuptools]
 packages = ["ligotools"]
