@@ -1,10 +1,5 @@
-# Ignore build artifacts
-build/
-dist/
-*.egg-info/
-
-# Ignore Python cache files
-__pycache__/
+# MyST build outputs
+_build/
+ligotools.egg-info/
 *.pyc
-*.pyo
-*.pyd
+__pycache__/
