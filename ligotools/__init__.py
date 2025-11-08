@@ -1,1 +1,3 @@
-from .readligo import *
+__all__ = ["readligo"]
+__version__ = "0.2.0"
+from . import readligo

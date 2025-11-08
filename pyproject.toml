@@ -1,0 +1,27 @@
+[build-system]
+# include numpy here to avoid "numpy not found" during build on some setups
+requires = ["setuptools>=64", "wheel", "numpy>=1.24"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ligotools"
+authors = [
+  { name = "Ligo Scientific Collaboration (LSC)" },
+  { name = "Carly Tran" }
+]
+version = "0.2.0"
+description = "Python tools for the LIGO Gravitational wave data analysis"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "matplotlib>=3.7",
+  "h5py>=3.8"
+]
+
+[project.urls]
+Homepage = "https://github.com/UCB-stat-159-f25/hw-2-carly-tran"
+
+[tool.setuptools]
+packages = ["ligotools"]
