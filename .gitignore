@@ -1,5 +1,7 @@
 # MyST build outputs
 _build/
 ligotools.egg-info/
+
+# Python cache files
 *.pyc
 __pycache__/
