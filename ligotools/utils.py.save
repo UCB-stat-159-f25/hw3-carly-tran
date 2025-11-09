@@ -1,0 +1,78 @@
+# ligotools/utils.py
+from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
+from scipy.io import wavfile
+
+def whiten(strain: np.ndarray, psd: np.ndarray, dt: float) -> np.ndarray:
+    """
+    Whiten a time-series given its one-sided PSD and sample spacing dt.
+    """
+    hf = np.fft.rfft(strain)
+    # avoid divide-by-zero
+    psd_safe = np.where(psd <= 0, np.inf, psd)
+    white_hf = hf / np.sqrt(psd_safe / (dt / 2.0))
+    white_ht = np.fft.irfft(white_hf, n=len(strain))
+    return white_ht
+
+def reqshift(data: np.ndarray, fshift: float, fs: float) -> np.ndarray:
+    """
+    Frequency-shift a real signal by fshift (Hz) via complex heterodyning.
+    Returns real-valued array.
+    """
+    t = np.arange(len(data)) / float(fs)
+    return np.real(data * np.exp(1j * 2.0 * np.pi * fshift * t))
+
+def write_wavfile(path, fs: float, data: np.ndarray) -> None:
+    """
+    Write a WAV file. If data is float, scale to 16-bit PCM.
+    """
+    path = Path(path)
+    x = np.asarray(data)
+    if np.issubdtype(x.dtype, np.floating):
+        m = float(np.max(np.abs(x))) or 1.0
+        x = (x / m * 32767.0).astype(np.int16)
+    else:
+        x = x.astype(np.int16)
+    wavfile.write(str(path), int(fs), x)
+
+def plot_psd_section(time: np.ndarray,
+                     strain: np.ndarray,
+                     fs: float,
+                     eventname: str,
+                     window_len: float = 4.0,
+                     overlap: float = 2.0,
+                     plottype: str = "png",
+                     outdir="figures"):
+    """
+    Compute & plot ASD via Welch; save to outdir / f"{eventname}_psd.{plottype}".
+    Returns (freqs, psd).
+    """
+    outdir = Path(outdir); outdir.mkdir(parents=True, exist_ok=True)
+    nperseg = int(window_len * fs)
+    noverlap = int(overlap * fs)
+
+    freqs, psd = signal.welch(
+        strain, fs=fs, window="tukey",
+        nperseg=nperseg, noverlap=noverlap, detrend="linear"
+    )
+    asd = np.sqrt(psd)
+
+    plt.figure(figsize=(7, 4))
+    plt.loglog(freqs, asd)
+    plt.xlabel("Frequency (Hz)")
+    plt.ylabel(r"ASD [strain$/\sqrt{\mathrm{Hz}}$]")
+    plt.title(f"{eventname} — Amplitude Spectral Density")
+    plt.grid(True, which="both", alpha=0.3)
+    outpath = Path(outdir) / f"{eventname}_psd.{plottype}"
+    plt.tight_layout()
+    plt.savefig(str(outpath), dpi=150, bbox_inches="tight")
+    plt.close()
+    return freqs, psd
+
+
+
+
+
+df
