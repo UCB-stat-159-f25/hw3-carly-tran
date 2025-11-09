@@ -1,3 +1,5 @@
 I utilized ChatGPT for help regarding the tests I created for readligo.py and utils.py. My tests were not passing so I referenced chatGPT and it identified that the tests were failing because the functions weren’t properly modularized or imported. With its help, I moved those functions into a new module ligotools/utils.py, fixed the import paths in the notebook, and ensured dependencies were correctly imported. After these changes, all pytest checks ran successfully.
 
-ChatGPT also assisted my help with debugging problems I had with MyST. It verified that the structure of my myst.yml file was correct 
+ChatGPT also assisted my help with debugging problems I had with MyST. It verified that the structure of my myst.yml file was correct even though my access to the GitHub pages wasn't working, so I am verifying it with the course staff on Ed. 
+
+Lastly, ChatGPT guided me on structuring my Makefile. I verified that I had to run make env, make html, and make clean, confirming that the site built correctly in _build/html. Also, the AI’s role was limited to setup guidance and documentation.
